@@ -6,10 +6,26 @@ router.get('/', (req, res) => {
     Post.findAll({
         attributes: [
             'title',
-            'content'
+            'contents'
         ]
     })
-    res.render('homepage')
+    .then(dbPostData => {
+        //const post = dbPostData;
+        const posts = dbPostData.map(post => post.get({ plain: true }));
+        res.render('homepage', { 
+            posts, 
+        
+         });
+        
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+    })
+
 });
+  
+        
+
 
 module.exports = router;
