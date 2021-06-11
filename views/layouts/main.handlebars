@@ -11,9 +11,14 @@
     <div class="wrapper">
 
         <nav>
-            <a class="home" href="#home">Home</a>
-            <a class="dashboard" href="/">Dashboard</a>
-            <a class="logout" href="/">Log Out</a>
+            <a class="home" href="/home">Home</a>
+            <a class="dashboard" href="/dashboard">Dashboard</a>
+            {{#if loggedIn}}
+            <a class="logout" href="/logout">Log Out</a>
+            {{/if}}
+            {{#unless loggedIn}}
+             <a class="login" href="/login">Log In</a>
+             {{/unless}}
         </nav>
 
         <div>

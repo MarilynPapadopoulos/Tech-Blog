@@ -1,6 +1,22 @@
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
 
+
+// /api/users
+router.get('/', (req, res) => {
+    //Access our User model and .findAll() method
+    User.findAll({
+        attributes: { exclude: ['password']}
+    })
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
+
+
+
 // /api/users/id
 router.get('/:id', (req, res) => {
     User.findOne({
@@ -30,10 +46,12 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/signup', (req, res) => {
+    console.log(req.body)
     User.create({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email
     })
     .then(dbUserData => {
         req.session.save(() => {
@@ -49,6 +67,8 @@ router.post('/', (req, res) => {
         res.status(500).json(err);
     })
 });
+
+// /api/users
 router.post('/login', (req, res) => {
     User.findOne({
         where: {
@@ -74,6 +94,7 @@ router.post('/login', (req, res) => {
         });
     });
 });
+
 router.post('/logout', (req, res) => {
     if (req.session.loggedIn) {
         req.session.destroy(() => {
@@ -82,6 +103,7 @@ router.post('/logout', (req, res) => {
     } else {
         res.status(404).end();
     }
-})
+});
+
 
 module.exports = router;

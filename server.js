@@ -20,7 +20,7 @@ const sess = {
     })
 };
 
-//app.use(session(sess));
+app.use(session(sess));
 
 //set up express middleware
 app.use(express.json());
